@@ -1,0 +1,82 @@
+{
+  "transactions": [
+    {
+      "id": 1,
+      "description": "Domain payment .com.br",
+      "amount": 40,
+      "date": "2022-01-01",
+      "categoryId": 1
+    },
+    {
+      "id": 2,
+      "description": "Laravel PRO course",
+      "amount": 19.90,
+      "date": "2022-01-01",
+      "categoryId": 1
+    },
+    {
+      "id": 3,
+      "description": "Salary",
+      "amount": 3000,
+      "date": "2022-01-03",
+      "categoryId": 2
+    },
+    {
+      "id": 4,
+      "description": "Freelance",
+      "amount": 350,
+      "date": "2022-01-03",
+      "categoryId": 2
+    },
+    {
+      "id": 5,
+      "description": "Car duties",
+      "amount": 750,
+      "date": "2022-01-07",
+      "categoryId": 3
+    },
+    {
+      "id": 6,
+      "description": "Movie theather",
+      "amount": 60,
+      "date": "2022-01-10",
+      "categoryId": 4
+    },
+    {
+      "id": 7,
+      "description": "Restaurant",
+      "amount": 100,
+      "date": "2022-01-10",
+      "categoryId": 4
+    },
+    {
+      "id": 8,
+      "description": "Google stcok",
+      "amount": 100,
+      "date": "2022-01-15",
+      "categoryId": 5
+    }
+  ],
+  "categories": [
+    {
+      "id": 1,
+      "name": "IT equipment, subscription to software and courses"
+    },
+    {
+      "id": 2,
+      "name": "Salary and freelances"
+    },
+    {
+      "id": 3,
+      "name": "Duties"
+    },
+    {
+      "id": 4,
+      "name": "Entertaiment"
+    },
+    {
+      "id": 5,
+      "name": "Investment"
+    }
+  ]
+}
