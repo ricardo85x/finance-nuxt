@@ -68,11 +68,14 @@
                 >Edit
               </a>
 
-              <a href="#" class="text-red-600 hover:text-red-900">Delete </a>
+              <a href="#" class="text-red-600 hover:text-red-900">Delete</a>
             </td>
           </tr>
 
-          <tr class="bg-white">
+          <tr 
+            v-for="category in categories" :key="category.id"
+
+            class="bg-white">
             <td
               class="
                 px-6
@@ -83,7 +86,7 @@
                 text-gray-900
               "
             >
-              Category 2
+              {{category.name}}
             </td>
 
             <td
@@ -100,7 +103,9 @@
                 >Edit
               </a>
 
-              <a href="#" class="text-red-600 hover:text-red-900">Delete </a>
+              <a href="#" 
+                @click.stop.prevent="deleteCategory(category.id)"
+                class="text-red-600 hover:text-red-900">Delete </a>
             </td>
           </tr>
         </tbody>
@@ -123,10 +128,20 @@ export default {
     AppFormLabel,
   },
 
+  async asyncData({ store }) {
+    return {
+      categories: await store.dispatch("categories/getCategories"),
+    };
+  },
+
   data() {
     return {};
   },
 
-  methods: {},
+  methods: {
+    deleteCategory(id) {
+      this.$store.dispatch('categories/deleteCategory', id)
+    }
+  },
 };
 </script>
