@@ -127,7 +127,10 @@ export default {
 
   methods: {
     deleteCategory(id) {
-      this.$store.dispatch("categories/deleteCategory", id);
+      this.$store.dispatch("categories/deleteCategory", id)
+      .then(() => {
+        this.categories = this.categories.filter(obj => obj.id !== id)
+      })
     },
     toUpdate(category) {
       category.is_updating = true;

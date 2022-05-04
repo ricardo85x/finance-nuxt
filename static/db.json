@@ -29,13 +29,6 @@
       "categoryId": 2
     },
     {
-      "id": 5,
-      "description": "Car duties",
-      "amount": 750,
-      "date": "2022-01-07",
-      "categoryId": 3
-    },
-    {
       "id": 6,
       "description": "Movie theather",
       "amount": 60,
@@ -67,10 +60,6 @@
       "name": "Salary and freelances"
     },
     {
-      "id": 3,
-      "name": "Duties"
-    },
-    {
       "id": 4,
       "name": "Entertaiment"
     },
@@ -79,12 +68,8 @@
       "name": "Investment"
     },
     {
-      "name": "batatinha",
+      "name": "Duties",
       "id": 6
-    },
-    {
-      "name": "Ovos",
-      "id": 7
     }
   ]
 }
