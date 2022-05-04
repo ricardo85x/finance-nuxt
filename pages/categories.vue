@@ -38,7 +38,13 @@
           </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
-          <tr class="bg-white">
+         
+
+          <tr
+            v-for="category in categories"
+            :key="category.id"
+            class="bg-white"
+          >
             <td
               class="
                 px-6
@@ -49,8 +55,12 @@
                 text-gray-900
               "
             >
-              <div class="w-72">
-                <AppFormInput />
+              <div v-if="category.is_updating" class="w-72">
+                <AppFormInput v-model="category.name" @keydown.enter="updateCategory(category)" />
+              </div>
+
+              <div v-else>
+                {{ category.name }}
               </div>
             </td>
 
@@ -64,48 +74,19 @@
                 space-x-4
               "
             >
-              <a href="#" class="text-indigo-600 hover:text-indigo-900"
+              <a
+                href="#"
+                class="text-indigo-600 hover:text-indigo-900"
+                @click.stop.prevent="toUpdate(category)"
                 >Edit
               </a>
 
-              <a href="#" class="text-red-600 hover:text-red-900">Delete</a>
-            </td>
-          </tr>
-
-          <tr 
-            v-for="category in categories" :key="category.id"
-
-            class="bg-white">
-            <td
-              class="
-                px-6
-                py-4
-                whitespace-nowrap
-                text-sm
-                font-medium
-                text-gray-900
-              "
-            >
-              {{category.name}}
-            </td>
-
-            <td
-              class="
-                px-6
-                py-4
-                whitespace-nowrap
-                text-right text-sm
-                font-medium
-                space-x-4
-              "
-            >
-              <a href="#" class="text-indigo-600 hover:text-indigo-900"
-                >Edit
-              </a>
-
-              <a href="#" 
+              <a
+                href="#"
                 @click.stop.prevent="deleteCategory(category.id)"
-                class="text-red-600 hover:text-red-900">Delete </a>
+                class="text-red-600 hover:text-red-900"
+                >Delete
+              </a>
             </td>
           </tr>
         </tbody>
@@ -130,7 +111,11 @@ export default {
 
   async asyncData({ store }) {
     return {
-      categories: await store.dispatch("categories/getCategories"),
+      categories: await store
+        .dispatch("categories/getCategories")
+        .then((response) =>
+          response.map((o) => ({ ...o, is_updating: false }))
+        ),
     };
   },
 
@@ -140,8 +125,22 @@ export default {
 
   methods: {
     deleteCategory(id) {
-      this.$store.dispatch('categories/deleteCategory', id)
-    }
+      this.$store.dispatch("categories/deleteCategory", id);
+    },
+    toUpdate(category) {
+      category.is_updating = true;
+    },
+    updateCategory(category) {
+      const data = {
+        name: category.name
+      }
+      this.$store.dispatch("categories/updateCategory", {
+        id: category.id,
+        data,
+      }).then(() => {
+        category.is_updating = false
+      });
+    },
   },
 };
 </script>
