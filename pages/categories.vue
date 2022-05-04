@@ -8,10 +8,10 @@
       <div>
         <div class="flex items-center space-x-3">
           <div>
-            <AppFormInput />
+            <AppFormInput v-model="name" @keyup.enter="addCategory" />
           </div>
 
-          <AppButton> Add </AppButton>
+          <AppButton @click="addCategory"> Add </AppButton>
         </div>
       </div>
 
@@ -56,7 +56,7 @@
               "
             >
               <div v-if="category.is_updating" class="w-72">
-                <AppFormInput v-model="category.name" @keydown.enter="updateCategory(category)" />
+                <AppFormInput v-model="category.name" @keyup.enter="updateCategory(category)" />
               </div>
 
               <div v-else>
@@ -120,7 +120,9 @@ export default {
   },
 
   data() {
-    return {};
+    return {
+      name: ''
+    };
   },
 
   methods: {
@@ -141,6 +143,20 @@ export default {
         category.is_updating = false
       });
     },
+    addCategory() {
+
+      if (!this.name) {
+        return
+      }
+      const data = {
+        name: this.name
+      }
+      this.$store.dispatch("categories/addCategory", data)
+      .then( response => {
+        this.categories.push(response)
+        this.name = ""
+      })
+    }
   },
 };
 </script>

@@ -7,5 +7,8 @@ export default {
     },
     updateCategory(_ctx, {id, data }) {
         return this.$axios.$patch(`categories/${id}`, data)
+    },
+    addCategory(_ctx, data) {
+        return this.$axios.$post(`categories`, data) 
     }
 }
