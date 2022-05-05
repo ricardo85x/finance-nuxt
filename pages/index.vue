@@ -1,49 +1,16 @@
 <template>
   <div>
+    
     <div class="flex items-center justify-between">
       <h1 class="font-bold text-2xl">Transactions</h1>
 
-      <AppButton> New transaction </AppButton>
+      <AppButton @click="isAdding = !isAdding"> New transaction </AppButton>
     </div>
-
-    <div
-      class="
-        my-4
-        space-y-4
-        border-2 border-indigo-200 border-dashed
-        bg-indigo-50
-        p-5
-        rounded-xl
-      "
-    >
-      <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-5">
-        <div>
-          <AppFormLabel>Transaction Date</AppFormLabel>
-          <AppFormInput type="date" />
-        </div>
-
-        <div>
-          <AppFormLabel>Value</AppFormLabel>
-          <AppFormInput />
-        </div>
-
-        <div>
-          <AppFormLabel>Description</AppFormLabel>
-          <AppFormInput />
-        </div>
-
-        <div>
-          <AppFormLabel>Category</AppFormLabel>
-          <AppFormSelect :options="[{ name: 'Softwares license', id: 1 }]" />
-        </div>
-      </div>
-
-      <div class="space-x-4 flex items-center justify-end">
-        <a href="" class="inline-flex text-gray-700 text-sm"> Cancel </a>
-
-        <AppButton> Add </AppButton>
-      </div>
-    </div>
+    
+    <TransactionAdd 
+      v-if="isAdding" 
+      @cancel="isAdding = false" 
+    />
 
     <div class="mt-6 pb-6 flex items-center space-x-4 border-b border-gray-300">
       <div>
@@ -376,6 +343,7 @@ import AppButton from "~/components/Ui/AppButton";
 import AppFormInput from "~/components/Ui/AppFormInput";
 import AppFormLabel from "~/components/Ui/AppFormLabel";
 import AppFormSelect from "~/components/Ui/AppFormSelect";
+import TransactionAdd from "~/components/Transactions/TransactionAdd.vue"
 
 export default {
   name: "IndexPage",
@@ -385,10 +353,13 @@ export default {
     AppFormInput,
     AppFormLabel,
     AppFormSelect,
+    TransactionAdd
   },
 
   data() {
-    return {};
+    return {
+      isAdding: false
+    };
   },
 };
 </script>

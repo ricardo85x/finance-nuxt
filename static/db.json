@@ -48,6 +48,20 @@
       "amount": 100,
       "date": "2022-01-15",
       "categoryId": 5
+    },
+    {
+      "amount": "5",
+      "categoryId": "some rando transaction",
+      "description": "Some description",
+      "date": "2022-05-19",
+      "id": 9
+    },
+    {
+      "amount": "299",
+      "categoryId": "4",
+      "description": "Hangout",
+      "date": "2022-05-01",
+      "id": 10
     }
   ],
   "categories": [
