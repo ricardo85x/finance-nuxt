@@ -12,7 +12,8 @@
       @cancel="isAdding = false" 
     />
 
-    <div class="mt-6 pb-6 flex items-center space-x-4 border-b border-gray-300">
+    <div 
+      class="mt-6 pb-6 flex items-center space-x-4 border-b border-gray-300">
       <div>
         <AppFormLabel>Description</AppFormLabel>
         <AppFormInput />
@@ -24,9 +25,10 @@
       </div>
     </div>
 
+
     <div class="mt-4">
       <div class="space-y-8">
-        <div>
+        <!-- <div>
           <div class="mb-1">
             <div class="font-bold text-sm">04 de Jan</div>
           </div>
@@ -132,7 +134,10 @@
               </div>
             </div>
 
-            <div class="flex items-center px-5 py-6 bg-white rounded-lg shadow">
+            <div 
+               v-for="transaction in transactions" :key="transaction.id"
+
+              class="flex items-center px-5 py-6 bg-white rounded-lg shadow">
               <div class="flex items-center space-x-5">
                 <div>
                   <div>
@@ -149,11 +154,11 @@
                         text-indigo-800
                       "
                     >
-                      Software
+                      {{transaction.category.name }}
                     </div>
                   </div>
 
-                  <div class="mt-1.5">Ticket payment</div>
+                  <div class="mt-1.5">{{transaction.description}}</div>
                 </div>
               </div>
 
@@ -196,15 +201,19 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
 
-        <div>
+        <div v-for="(group, dataKey) in transactionsGrouped" :key="dataKey">
           <div class="mb-1">
-            <div class="font-bold text-sm">04 de Jan</div>
+            <div class="font-bold text-sm">{{dataKey}}</div>
           </div>
 
           <div class="space-y-3">
-            <div class="flex items-center px-5 py-6 bg-white rounded-lg shadow">
+            <div 
+
+              v-for="transaction in group" :key="transaction.id"
+
+              class="flex items-center px-5 py-6 bg-white rounded-lg shadow">
               <div class="flex items-center space-x-5">
                 <div>
                   <div>
@@ -221,17 +230,18 @@
                         text-indigo-800
                       "
                     >
-                      Software
+                      {{transaction.category.name}}
                     </div>
                   </div>
 
-                  <div class="mt-1.5">Ticket payment</div>
+                  <div class="mt-1.5">{{transaction.description}}</div>
                 </div>
               </div>
 
               <div class="flex items-center space-x-4 ml-auto">
                 <div class="flex items-center">
-                  <svg
+
+                  <svg v-if="transaction.amount >= 0"
                     class="w-4 h-4 text-green-600"
                     fill="none"
                     stroke="currentColor"
@@ -246,56 +256,7 @@
                     ></path>
                   </svg>
 
-                  <div class="font-bold">R$ 43,02</div>
-                </div>
-
-                <button>
-                  <svg
-                    class="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M19 9l-7 7-7-7"
-                    ></path>
-                  </svg>
-                </button>
-              </div>
-            </div>
-
-            <div class="flex items-center px-5 py-6 bg-white rounded-lg shadow">
-              <div class="flex items-center space-x-5">
-                <div>
-                  <div>
-                    <div
-                      class="
-                        inline-flex
-                        items-center
-                        px-2.5
-                        py-0.5
-                        rounded-full
-                        text-sm
-                        font-medium
-                        bg-indigo-100
-                        text-indigo-800
-                      "
-                    >
-                      Software
-                    </div>
-                  </div>
-
-                  <div class="mt-1.5">Ticket payment</div>
-                </div>
-              </div>
-
-              <div class="flex items-center space-x-4 ml-auto">
-                <div class="flex items-center">
-                  <svg
+                  <svg v-else
                     class="w-4 h-4 text-red-600"
                     fill="none"
                     stroke="currentColor"
@@ -310,7 +271,7 @@
                     ></path>
                   </svg>
 
-                  <div class="font-bold">R$ 43,02</div>
+                  <div class="font-bold">{{transaction.localeCurrency}}</div>
                 </div>
 
                 <button>
@@ -331,6 +292,7 @@
                 </button>
               </div>
             </div>
+
           </div>
         </div>
       </div>
@@ -339,6 +301,7 @@
 </template>
 
 <script>
+import { groupBy, orderBy } from "lodash"
 import AppButton from "~/components/Ui/AppButton";
 import AppFormInput from "~/components/Ui/AppFormInput";
 import AppFormLabel from "~/components/Ui/AppFormLabel";
@@ -356,10 +319,49 @@ export default {
     TransactionAdd
   },
 
+  async asyncData({ store}) {
+
+    const transactions = await store.dispatch("transactions/getTransactions")
+    return {
+      transactions
+    }
+
+  },
+
   data() {
     return {
       isAdding: false
     };
   },
+
+  computed: {
+    transactionsGrouped() {
+      var options = { year: 'numeric', month: 'short', day: '2-digit' };
+
+      const newObj= {}
+
+      orderBy(this.transactions, 'date', 'desc')
+        .map( d => ({
+           ...d, 
+           localeDate: new Date(d.date).toLocaleDateString('pt-br', options),
+           localeCurrency: d.amount.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})
+      })).forEach(obj => {
+
+        if(obj.localeDate in newObj){
+          newObj[obj.localeDate].push(obj)
+        } else {
+          newObj[obj.localeDate] = [obj]
+        }
+
+
+
+      })
+
+      return newObj
+
+//      
+    }
+  }
+
 };
 </script>

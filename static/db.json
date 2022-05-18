@@ -29,6 +29,13 @@
       "categoryId": 2
     },
     {
+      "id": 5,
+      "description": "Car duties",
+      "amount": 750,
+      "date": "2022-01-07",
+      "categoryId": 3
+    },
+    {
       "id": 6,
       "description": "Movie theather",
       "amount": 60,
@@ -50,17 +57,17 @@
       "categoryId": 5
     },
     {
-      "amount": "5",
-      "categoryId": "some rando transaction",
-      "description": "Some description",
-      "date": "2022-05-19",
+      "amount": "95.50",
+      "categoryId": "4",
+      "description": "Pizza",
+      "date": "2022-01-14",
       "id": 9
     },
     {
-      "amount": "299",
+      "amount": "35.99",
       "categoryId": "4",
-      "description": "Hangout",
-      "date": "2022-05-01",
+      "description": "Esfiha",
+      "date": "2022-01-14",
       "id": 10
     }
   ],
@@ -74,16 +81,16 @@
       "name": "Salary and freelances"
     },
     {
+      "id": 3,
+      "name": "Duties"
+    },
+    {
       "id": 4,
       "name": "Entertaiment"
     },
     {
       "id": 5,
       "name": "Investment"
-    },
-    {
-      "name": "Duties",
-      "id": 6
     }
   ]
 }
