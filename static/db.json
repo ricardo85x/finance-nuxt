@@ -57,18 +57,11 @@
       "categoryId": 5
     },
     {
-      "amount": "95.50",
-      "categoryId": "4",
-      "description": "Pizza",
-      "date": "2022-01-14",
+      "date": "2022-05-19",
+      "description": "Pizza de 4 queijos hummm",
+      "amount": 50,
+      "categoryId": 4,
       "id": 9
-    },
-    {
-      "amount": "35.99",
-      "categoryId": "4",
-      "description": "Esfiha",
-      "date": "2022-01-14",
-      "id": 10
     }
   ],
   "categories": [

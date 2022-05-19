@@ -9,6 +9,7 @@
     
     <TransactionAdd 
       v-if="isAdding" 
+      @after-add="afterAdd"
       @cancel="isAdding = false" 
     />
 
@@ -28,270 +29,19 @@
 
     <div class="mt-4">
       <div class="space-y-8">
-        <!-- <div>
-          <div class="mb-1">
-            <div class="font-bold text-sm">04 de Jan</div>
-          </div>
-
-          <div class="space-y-3">
-            <div class="px-5 py-6 bg-white rounded-lg shadow">
-              <div class="flex items-center">
-                <div class="flex items-center space-x-5">
-                  <div>
-                    <div>
-                      <div
-                        class="
-                          inline-flex
-                          items-center
-                          px-2.5
-                          py-0.5
-                          rounded-full
-                          text-sm
-                          font-medium
-                          bg-indigo-100
-                          text-indigo-800
-                        "
-                      >
-                        Software
-                      </div>
-                    </div>
-
-                    <div class="mt-1.5">Ticket payment</div>
-                  </div>
-                </div>
-
-                <div class="flex items-center space-x-4 ml-auto">
-                  <div class="flex items-center">
-                    <svg
-                      class="w-4 h-4 text-green-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                      ></path>
-                    </svg>
-
-                    <div class="font-bold">R$ 43,02</div>
-                  </div>
-
-                  <button>
-                    <svg
-                      class="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M19 9l-7 7-7-7"
-                      ></path>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-
-              <div class="my-4 mt-10 space-y-4">
-                <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-5">
-                  <div>
-                    <AppFormLabel>Transaction Date</AppFormLabel>
-                    <AppFormInput type="date" />
-                  </div>
-
-                  <div>
-                    <AppFormLabel>Value</AppFormLabel>
-                    <AppFormInput type="number" />
-                  </div>
-
-                  <div>
-                    <AppFormLabel>Description</AppFormLabel>
-                    <AppFormInput />
-                  </div>
-
-                  <div>
-                    <AppFormLabel>Category</AppFormLabel>
-                    <AppFormSelect
-                      :options="[{ name: 'Software license', id: 1 }]"
-                    />
-                  </div>
-                </div>
-
-                <div class="space-x-4 flex items-center justify-end">
-                  <a href="" class="inline-flex text-gray-700 text-sm">
-                    Cancel
-                  </a>
-
-                  <AppButton> Edit </AppButton>
-                </div>
-              </div>
-            </div>
-
-            <div 
-               v-for="transaction in transactions" :key="transaction.id"
-
-              class="flex items-center px-5 py-6 bg-white rounded-lg shadow">
-              <div class="flex items-center space-x-5">
-                <div>
-                  <div>
-                    <div
-                      class="
-                        inline-flex
-                        items-center
-                        px-2.5
-                        py-0.5
-                        rounded-full
-                        text-sm
-                        font-medium
-                        bg-indigo-100
-                        text-indigo-800
-                      "
-                    >
-                      {{transaction.category.name }}
-                    </div>
-                  </div>
-
-                  <div class="mt-1.5">{{transaction.description}}</div>
-                </div>
-              </div>
-
-              <div class="flex items-center space-x-4 ml-auto">
-                <div class="flex items-center">
-                  <svg
-                    class="w-4 h-4 text-red-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M20 12H4"
-                    ></path>
-                  </svg>
-
-                  <div class="font-bold">R$ 43,02</div>
-                </div>
-
-                <button>
-                  <svg
-                    class="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M19 9l-7 7-7-7"
-                    ></path>
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div> -->
-
+  
         <div v-for="(group, dataKey) in transactionsGrouped" :key="dataKey">
           <div class="mb-1">
             <div class="font-bold text-sm">{{dataKey}}</div>
           </div>
 
           <div class="space-y-3">
-            <div 
+            <Transaction 
+              v-for="transaction in group" 
+              :key="transaction.id" 
+              :transaction="transaction"  
+            />
 
-              v-for="transaction in group" :key="transaction.id"
-
-              class="flex items-center px-5 py-6 bg-white rounded-lg shadow">
-              <div class="flex items-center space-x-5">
-                <div>
-                  <div>
-                    <div
-                      class="
-                        inline-flex
-                        items-center
-                        px-2.5
-                        py-0.5
-                        rounded-full
-                        text-sm
-                        font-medium
-                        bg-indigo-100
-                        text-indigo-800
-                      "
-                    >
-                      {{transaction.category.name}}
-                    </div>
-                  </div>
-
-                  <div class="mt-1.5">{{transaction.description}}</div>
-                </div>
-              </div>
-
-              <div class="flex items-center space-x-4 ml-auto">
-                <div class="flex items-center">
-
-                  <svg v-if="transaction.amount >= 0"
-                    class="w-4 h-4 text-green-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                    ></path>
-                  </svg>
-
-                  <svg v-else
-                    class="w-4 h-4 text-red-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M20 12H4"
-                    ></path>
-                  </svg>
-
-                  <div class="font-bold">{{transaction.localeCurrency}}</div>
-                </div>
-
-                <button>
-                  <svg
-                    class="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M19 9l-7 7-7-7"
-                    ></path>
-                  </svg>
-                </button>
-              </div>
-            </div>
 
           </div>
         </div>
@@ -307,6 +57,7 @@ import AppFormInput from "~/components/Ui/AppFormInput";
 import AppFormLabel from "~/components/Ui/AppFormLabel";
 import AppFormSelect from "~/components/Ui/AppFormSelect";
 import TransactionAdd from "~/components/Transactions/TransactionAdd.vue"
+import Transaction from "~/components/Transactions/Transaction.vue"
 
 export default {
   name: "IndexPage",
@@ -316,7 +67,8 @@ export default {
     AppFormInput,
     AppFormLabel,
     AppFormSelect,
-    TransactionAdd
+    TransactionAdd,
+    Transaction
   },
 
   async asyncData({ store}) {
@@ -334,17 +86,30 @@ export default {
     };
   },
 
+  methods: {
+    formatDate(date) {
+      var options = { year: 'numeric', month: 'short', day: '2-digit' };
+      return new Date(date).toLocaleDateString('pt-br', options)
+    },
+    formatMoney(amount) {
+      return amount.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})
+    },
+    afterAdd(transaction){
+      console.log("whatafork?", transaction)
+      this.transactions.push(transaction)
+    }
+  }, 
+
   computed: {
     transactionsGrouped() {
-      var options = { year: 'numeric', month: 'short', day: '2-digit' };
 
       const newObj= {}
 
       orderBy(this.transactions, 'date', 'desc')
         .map( d => ({
            ...d, 
-           localeDate: new Date(d.date).toLocaleDateString('pt-br', options),
-           localeCurrency: d.amount.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})
+           localeDate:this.formatDate(d.date),
+           localeCurrency: this.formatMoney(d.amount)
       })).forEach(obj => {
 
         if(obj.localeDate in newObj){
@@ -352,14 +117,9 @@ export default {
         } else {
           newObj[obj.localeDate] = [obj]
         }
-
-
-
       })
 
-      return newObj
-
-//      
+      return newObj   
     }
   }
 

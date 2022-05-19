@@ -18,7 +18,7 @@
 
         <div>
           <AppFormLabel>Value</AppFormLabel>
-          <AppFormInput v-model="form.amount" type="number" />
+          <AppFormInput v-model.number="form.amount" type="number" />
         </div>
 
         <div>
@@ -85,7 +85,13 @@ export default {
 
   methods: {
     AddTransaction() {
-      this.$store.dispatch("transactions/addTransaction", this.form);
+      this.$store.dispatch("transactions/addTransaction", this.form)
+      .then((res) => {
+        this.$emit('after-add', {
+          ...res,
+          category: this.categories.find(o => o.id == this.form.categoryId)
+        })
+      })
     },
 
     onCancell() {
