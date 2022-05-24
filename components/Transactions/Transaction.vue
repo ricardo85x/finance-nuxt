@@ -16,20 +16,31 @@
                           bg-indigo-100
                           text-indigo-800
                         ">
-                            {{transaction.category.name}}
+                            {{ transaction.category.name }}
                         </div>
                     </div>
-                    <div class="mt-1.5">{{transaction.description}}</div>
+                    <div class="mt-1.5">{{ transaction.description }}</div>
                 </div>
             </div>
             <div class="flex items-center space-x-4 ml-auto">
                 <div class="flex items-center">
-                    <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
+
+
+                    <svg v-if="transaction.amount >= 0" 
+                        class="w-4 h-4 text-green-600" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                     </svg>
-                    <div class="font-bold">{{transaction.localeCurrency}}</div>
+
+                    <svg v-else 
+                        class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                        d="M20 12H4"></path>
+                    </svg>
+
+                    <div class="font-bold">{{ transaction.localeCurrency }}</div>
                 </div>
                 <button @click="isUpdating = !isUpdating">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -39,13 +50,10 @@
                 </button>
             </div>
         </div>
-        <TransactionUpdate 
-            :transaction="transaction" 
-            v-if="isUpdating" 
-            @cancel="isUpdating = false"
-        />
+        <TransactionUpdate :transaction="transaction" v-if="isUpdating" @cancel="isUpdating = false"
+            @update="onUpdate" />
     </div>
-    
+
 </template>
 
 <script>
@@ -53,7 +61,7 @@ import TransactionUpdate from "./TransactionUpdate.vue";
 
 export default {
     name: "Transaction",
-    
+
     components: {
         TransactionUpdate
     },
@@ -70,6 +78,11 @@ export default {
 
         };
     },
-    components: { TransactionUpdate, TransactionUpdate }
+    components: { TransactionUpdate, TransactionUpdate },
+    methods: {
+        onUpdate(transaction) {
+            this.$emit("update", transaction)
+        }
+    }
 }
 </script>

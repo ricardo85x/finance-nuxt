@@ -50,16 +50,16 @@
       "categoryId": 4
     },
     {
-      "id": 8,
-      "description": "Google stcok",
-      "amount": 100,
       "date": "2022-01-15",
-      "categoryId": 5
+      "description": "Google stcok",
+      "amount": -99,
+      "categoryId": 5,
+      "id": 8
     },
     {
       "date": "2022-05-19",
       "description": "Pizza de 4 queijos hummm",
-      "amount": 50,
+      "amount": -88,
       "categoryId": 4,
       "id": 9
     }

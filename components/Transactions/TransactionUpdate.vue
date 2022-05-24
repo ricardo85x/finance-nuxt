@@ -46,11 +46,21 @@ export default {
     },
 
     data() {
+
+        const { 
+            date, 
+            description, 
+            amount, 
+            category: { id : categoryId } 
+        } = this.transaction;
+
         return {
-            localTransaction: ({ 
-                ...this.transaction, 
-                categoryId: this.transaction?.category?.id 
-            }),
+            localTransaction: { 
+                date,
+                description,
+                amount,
+                categoryId
+            },
             categories: []
         }
     },
@@ -68,23 +78,16 @@ export default {
 
     methods: {
         updateTransacttion() {
-            const { 
-                date, 
-                description, 
-                amount, 
-                categoryId 
-            } = this.localTransaction
-
-            const data = {
-                date,
-                description,
-                amount,
-                categoryId
-            }
-
-
             this.$store.dispatch("transactions/updateTransaction", {
-                id: this.transaction.id, data
+                id: this.transaction.id, data: this.localTransaction
+            })
+            .then(res => {
+                this.$emit("update", {
+                    ...res.data,
+                    category: this.categories.find(o => o.id == this.localTransaction.categoryId)
+
+                });
+                this.onCancel();
             })
         },
         onCancel(){

@@ -1,6 +1,11 @@
 export default {
-    getTransactions(){
-        return this.$axios.$get("transactions?_expand=category")
+    getTransactions(_ctx, filter = {}){
+        return this.$axios.$get("transactions", {
+            params: {
+                _expand: 'category',
+                ...filter
+            }
+        })
     },
     addTransaction(_ctx, data){
         return this.$axios.$post("transactions", data)

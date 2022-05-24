@@ -13,18 +13,7 @@
       @cancel="isAdding = false" 
     />
 
-    <div 
-      class="mt-6 pb-6 flex items-center space-x-4 border-b border-gray-300">
-      <div>
-        <AppFormLabel>Description</AppFormLabel>
-        <AppFormInput />
-      </div>
-
-      <div>
-        <AppFormLabel>Category</AppFormLabel>
-        <AppFormSelect :options="[{ name: 'Software license', id: 1 }]" />
-      </div>
-    </div>
+    <TransactionFilter @filter="onFilter" />
 
 
     <div class="mt-4">
@@ -40,6 +29,7 @@
               v-for="transaction in group" 
               :key="transaction.id" 
               :transaction="transaction"  
+              @update="onUpdate"
             />
 
 
@@ -58,6 +48,7 @@ import AppFormLabel from "~/components/Ui/AppFormLabel";
 import AppFormSelect from "~/components/Ui/AppFormSelect";
 import TransactionAdd from "~/components/Transactions/TransactionAdd.vue"
 import Transaction from "~/components/Transactions/Transaction.vue"
+import TransactionFilter from "~/components/Transactions/TransactionFilter.vue"
 
 export default {
   name: "IndexPage",
@@ -68,7 +59,8 @@ export default {
     AppFormLabel,
     AppFormSelect,
     TransactionAdd,
-    Transaction
+    Transaction,
+    TransactionFilter
   },
 
   async asyncData({ store}) {
@@ -95,8 +87,18 @@ export default {
       return amount.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})
     },
     afterAdd(transaction){
-      console.log("whatafork?", transaction)
       this.transactions.push(transaction)
+    },
+    onUpdate( transaction ) {
+      const idx = this.transactions.findIndex(o => o.id === transaction.id)
+      this.transactions.splice(idx, 1, transaction)
+    },
+    onFilter( filterForm ) {
+      console.log(filterForm)
+      this.$store.dispatch('transactions/getTransactions', filterForm)
+      .then((res) => {
+        this.transactions = res
+      })
     }
   }, 
 
@@ -109,7 +111,7 @@ export default {
         .map( d => ({
            ...d, 
            localeDate:this.formatDate(d.date),
-           localeCurrency: this.formatMoney(d.amount)
+           localeCurrency: this.formatMoney(Math.abs(d.amount))
       })).forEach(obj => {
 
         if(obj.localeDate in newObj){
